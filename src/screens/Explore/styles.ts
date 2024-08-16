@@ -55,7 +55,12 @@ export const useStyles = () => {
     name: {
       fontWeight: '600',
       fontSize: 15,
-      marginBottom: 5,
+      lineHeight: 18,
+      color: theme.colors.base,
+    },
+    category: {
+      fontSize: 13,
+      lineHeight: 18,
       color: theme.colors.base,
     },
     bio: {

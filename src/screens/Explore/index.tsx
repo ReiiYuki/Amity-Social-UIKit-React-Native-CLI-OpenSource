@@ -13,6 +13,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useAuth from '../../hooks/useAuth';
 import { SvgXml } from 'react-native-svg';
 import { communityIcon } from '../../svg/svg-xml-list';
+import RecommendedCard from './Components/RecommendedCard';
 
 export default function Explore() {
   const styles = useStyles();
@@ -117,44 +118,23 @@ export default function Explore() {
     );
   }, [apiRegion, categoryList, handleCategoryClick, styles]);
 
+  // console.log(recommendCommunityList.map(r => r.displayName + ' ' + r.categoryIds))
+
+  useEffect(() => {
+    CategoryRepository.getCategory('9b9a2f74e45888bb9c88ed5c604ecccb').then(
+      (r) => {
+        console.log(r.data.name);
+      }
+    );
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.recommendContainer}>
         <Text style={styles.title}>Recommended for you</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {recommendCommunityList.map((community) => (
-            <TouchableOpacity
-              key={community.communityId}
-              style={styles.card}
-              onPress={() =>
-                handleCommunityClick(
-                  community.communityId,
-                  community.displayName
-                )
-              }
-            >
-              {community.avatarFileId ? (
-                <Image
-                  style={styles.avatar}
-                  source={{
-                    uri: `https://api.${apiRegion}.amity.co/api/v3/files/${community.avatarFileId}/download`,
-                  }}
-                />
-              ) : (
-                <SvgXml
-                  xml={communityIcon}
-                  style={styles.avatar}
-                  width={40}
-                  height={40}
-                />
-              )}
-
-              <Text style={styles.name}>{community.displayName}</Text>
-              <Text style={styles.recommendSubDetail}>
-                {community.membersCount} members
-              </Text>
-              <Text style={styles.bio}>{community.description}</Text>
-            </TouchableOpacity>
+            <RecommendedCard community={community} />
           ))}
         </ScrollView>
       </View>

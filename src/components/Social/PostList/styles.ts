@@ -78,11 +78,13 @@ export const useStyles = () => {
       flexDirection: 'row',
       paddingRight: 6,
       paddingVertical: 12,
+      alignItems: 'center',
     },
     commentBtn: {
       flexDirection: 'row',
       paddingHorizontal: 10,
       paddingVertical: 12,
+      alignItems: 'center',
     },
     btnText: {
       color: theme.colors.baseShade2,

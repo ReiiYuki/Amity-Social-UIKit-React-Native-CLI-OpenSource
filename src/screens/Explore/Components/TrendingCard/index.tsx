@@ -1,23 +1,25 @@
 import * as React from 'react';
 // import { useTranslation } from 'react-i18next';
 
-import { Text, Image, TouchableOpacity } from 'react-native';
-import { useStyles } from '../styles';
+import { Text, Image, TouchableOpacity, View } from 'react-native';
+import { useStyles } from '../../styles';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SvgXml } from 'react-native-svg';
-import { communityIcon } from '../../../svg/svg-xml-list';
-import useAuth from '../../../hooks/useAuth';
+import { communityIcon } from '../../../../svg/svg-xml-list';
+import useAuth from '../../../../hooks/useAuth';
 import { useCallback, useEffect, useState } from 'react';
 import { CategoryRepository } from '@amityco/ts-sdk-react-native';
-import { formatNumber } from '../../../util/numberUtil';
+import { formatNumber } from '../../../../util/numberUtil';
 
 interface Props {
+  ranking: number;
   community: Amity.Community;
 }
 
-export default function RecommendedCard({ community }: Props) {
+export default function TrendingCard({ ranking, community }: Props) {
   const styles = useStyles();
+
   const { apiRegion } = useAuth();
 
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -45,7 +47,7 @@ export default function RecommendedCard({ community }: Props) {
   return (
     <TouchableOpacity
       key={community.communityId}
-      style={styles.card}
+      style={styles.itemContainer}
       onPress={() =>
         handleCommunityClick(community.communityId, community.displayName)
       }
@@ -53,9 +55,13 @@ export default function RecommendedCard({ community }: Props) {
       {community.avatarFileId ? (
         <Image
           style={styles.avatar}
-          source={{
-            uri: `https://api.${apiRegion}.amity.co/api/v3/files/${community.avatarFileId}/download`,
-          }}
+          source={
+            community.avatarFileId
+              ? {
+                  uri: `https://api.${apiRegion}.amity.co/api/v3/files/${community.avatarFileId}/download`,
+                }
+              : require('../../../../../assets/icon/Placeholder.png')
+          }
         />
       ) : (
         <SvgXml
@@ -66,12 +72,19 @@ export default function RecommendedCard({ community }: Props) {
         />
       )}
 
-      <Text style={styles.name}>{community.displayName}</Text>
-      <Text style={styles.category}>{category && category.name}</Text>
-      <Text style={styles.recommendSubDetail}>
-        {community.membersCount && formatNumber(community.membersCount)} members
-      </Text>
-      <Text style={styles.bio}>{community.description}</Text>
+      <View style={styles.trendingTextContainer}>
+        <Text style={styles.number}>{ranking}</Text>
+        <View style={styles.memberContainer}>
+          <View style={styles.memberTextContainer}>
+            <Text style={styles.memberText}>{community.displayName}</Text>
+            <Text style={styles.memberCount}>
+              {category && category.name} {'\u2022'}{' '}
+              {community.membersCount && formatNumber(community.membersCount)}{' '}
+              members
+            </Text>
+          </View>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 }

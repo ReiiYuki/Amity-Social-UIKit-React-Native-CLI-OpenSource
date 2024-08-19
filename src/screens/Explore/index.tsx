@@ -11,9 +11,8 @@ import { useStyles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useAuth from '../../hooks/useAuth';
-import { SvgXml } from 'react-native-svg';
-import { communityIcon } from '../../svg/svg-xml-list';
 import RecommendedCard from './Components/RecommendedCard';
+import TrendingCard from './Components/TrendingCard';
 
 export default function Explore() {
   const styles = useStyles();
@@ -63,16 +62,13 @@ export default function Explore() {
       navigation.navigate('CategoryList');
     }, 100);
   };
-  const handleCommunityClick = (communityId: string, communityName: string) => {
-    setTimeout(() => {
-      navigation.navigate('CommunityHome', { communityId, communityName });
-    }, 100);
-  };
+
   useEffect(() => {
     loadRecommendCommunities();
     loadTrendingCommunities();
     loadCategories();
   }, []);
+
   const handleCategoryClick = useCallback(
     (categoryId: string, categoryName: string) => {
       setTimeout(() => {
@@ -142,50 +138,7 @@ export default function Explore() {
         <Text style={styles.title}>Today's trending</Text>
         <View>
           {trendingCommunityList.map((community, index) => (
-            <TouchableOpacity
-              key={community.communityId}
-              style={styles.itemContainer}
-              onPress={() =>
-                handleCommunityClick(
-                  community.communityId,
-                  community.displayName
-                )
-              }
-            >
-              {community.avatarFileId ? (
-                <Image
-                  style={styles.avatar}
-                  source={
-                    community.avatarFileId
-                      ? {
-                          uri: `https://api.${apiRegion}.amity.co/api/v3/files/${community.avatarFileId}/download`,
-                        }
-                      : require('../../../assets/icon/Placeholder.png')
-                  }
-                />
-              ) : (
-                <SvgXml
-                  xml={communityIcon}
-                  style={styles.avatar}
-                  width={40}
-                  height={40}
-                />
-              )}
-
-              <View style={styles.trendingTextContainer}>
-                <Text style={styles.number}>{index + 1}</Text>
-                <View style={styles.memberContainer}>
-                  <View style={styles.memberTextContainer}>
-                    <Text style={styles.memberText}>
-                      {community.displayName}
-                    </Text>
-                    <Text style={styles.memberCount}>
-                      {community.membersCount} members
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <TrendingCard ranking={index + 1} community={community} />
           ))}
         </View>
       </View>

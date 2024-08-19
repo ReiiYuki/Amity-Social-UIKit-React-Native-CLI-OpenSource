@@ -1,9 +1,7 @@
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import type { MyMD3Theme } from 'src/providers/amity-ui-kit-provider';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const useStyles = (theme: MyMD3Theme) => {
-  const { top, bottom } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const styles = StyleSheet.create({
     container: {
@@ -11,9 +9,8 @@ export const useStyles = (theme: MyMD3Theme) => {
       backgroundColor: theme.colors.background,
     },
     header: {
-      top: top,
+      zIndex: 1,
       width: '100%',
-      position: 'absolute',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -34,8 +31,10 @@ export const useStyles = (theme: MyMD3Theme) => {
       fontWeight: '600',
     },
     scrollContainer: {
-      paddingTop: top / 2,
-      paddingBottom: bottom,
+      // Adjustment for marginTop 8 in AmityPostContentComponent/styles.ts
+      marginTop: -8,
+      // Adjustment for paddingBottom 40 in AmityPostCommentComponent/AmityPostCommentComponent.tsx
+      marginBottom: -40,
       flex: 1,
     },
     input: {
@@ -155,8 +154,8 @@ export const useStyles = (theme: MyMD3Theme) => {
     },
     commentListFooter: {
       width: width,
-      position: 'absolute',
-      bottom: bottom,
+      // position: 'absolute',
+      // bottom: bottom,
     },
     modalContainer: {
       flex: 1,

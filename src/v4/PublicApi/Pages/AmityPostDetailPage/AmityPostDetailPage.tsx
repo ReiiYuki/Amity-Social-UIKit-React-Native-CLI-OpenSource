@@ -453,6 +453,24 @@ const AmityPostDetailPage: FC<AmityPostDetailPageType> = ({ postId }) => {
 
   return (
     <SafeAreaView testID={accessibilityId} style={styles.container}>
+      <View style={styles.header}>
+        <Pressable onPress={onPressBack}>
+          <BackButtonIconElement
+            pageID={pageId}
+            componentID={componentId}
+            style={styles.headerIcon}
+          />
+        </Pressable>
+        <Text style={styles.headerTitle}>Post</Text>
+        <Pressable onPress={openModal}>
+          <MenuButtonIconElement
+            pageID={pageId}
+            componentID={componentId}
+            style={styles.headerIcon}
+          />
+        </Pressable>
+      </View>
+
       <View style={styles.scrollContainer}>
         <AmityPostCommentComponent
           setReplyUserName={setReplyUserName}
@@ -473,23 +491,7 @@ const AmityPostDetailPage: FC<AmityPostDetailPageType> = ({ postId }) => {
           }
         />
       </View>
-      <View style={styles.header}>
-        <Pressable onPress={onPressBack}>
-          <BackButtonIconElement
-            pageID={pageId}
-            componentID={componentId}
-            style={styles.headerIcon}
-          />
-        </Pressable>
-        <Text style={styles.headerTitle}>Post</Text>
-        <Pressable onPress={openModal}>
-          <MenuButtonIconElement
-            pageID={pageId}
-            componentID={componentId}
-            style={styles.headerIcon}
-          />
-        </Pressable>
-      </View>
+
       {renderFooterComponent}
       {renderOptionModal()}
       {editPostModalVisible && (
